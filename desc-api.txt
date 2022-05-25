@@ -1,0 +1,400 @@
+=== API TRAVELIN ===
+
+{root.api}/{version}/{grouping}/{endpoint}
+Sample: http://localhost:5000/v1/destination/:id
+
+Status Response
+200 - OK --> Call Api Success
+502 - BAD GATEWAY --> Invalid Response From Anthor Request
+
+----- GROUP : DESTINATION -----
+
+[1] - Create Destination (method post)
+http://localhost:5000/v1/destination
+
+req: 
+{
+	"id" : "string",
+	"title" : "string",
+	"review" : number,
+	"openingHours" : "string",
+	"description" : "string",
+	"image" : "string",
+	"address" : "string",
+	"city" : "string",
+	"country" : "string",
+	"isFood" : boolean,
+	"cost" : number,
+}
+
+res :
+{
+	"message" : "Create Destination Success",
+	"data": {
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Create Destination Failed"
+}
+
+[2] - Get Destination (method get)
+http://localhost:5000/v1/destination/find/:id
+
+req: req.params.id
+
+res :
+{
+	"message" : "Get Destination By Id Success",
+	"data": {
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Get Destination By Id Failed"
+}
+
+[3] - Update Destination (method put)
+http://localhost:5000/v1/destination/:id
+
+req: req.params.id
+{
+	"id" : "string",
+	"title" : "string",
+	"review" : number,
+	"openingHours" : "string",
+	"description" : "string",
+	"image" : "string",
+	"address" : "string",
+	"city" : "string",
+	"country" : "string",
+	"isFood" : boolean,
+	"cost" : number,
+}
+
+res :
+{
+	"message" : Update Destination Success",
+	"data": {
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : Update Destination Failed"
+}
+
+
+[4] - Delete Destination (method delete)
+http://localhost:5000/v1/destination/:id
+
+req: req.params.id
+
+res :
+{
+	"message" : "Delete Destination Success",
+	"data": {
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Delete Destination Failed"
+}
+
+[5] - Get All Destination (method get)
+http://localhost:5000/v1/destination
+
+req: req.query.isfood
+
+res :
+{
+	"message" : "Get ALL Destination Success",
+	"data": {
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		},
+		{
+			"id" : "string",
+			"title" : "string",
+			"review" : number,
+			"openingHours" : "string",
+			"description" : "string",
+			"image" : "string",
+			"address" : "string",
+			"city" : "string",
+			"country" : "string",
+			"isFood" : boolean,
+			"cost" : number,
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Get ALL Destination Failed"
+}
+
+----- GROUP : AUTHENTICATION -----
+
+[1] - Register
+http://localhost:5000/v1/auth/register
+
+req: 
+{
+	"username" : "string",
+	"email" : "string",
+	"password" : "string",
+}
+
+res: 
+{
+	"message" : "Register Success",
+	"data" : {
+			"id" : "string",
+			"username" : "string",
+			"password" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-err :
+{
+	"message" : "Register Failed"
+}
+
+[2] - Login
+http://localhost:5000/v1/auth/login
+
+req: 
+{
+	"username" : "string",
+	"password" : "string",
+}
+
+res: 
+{
+	"message" : "Register Success",
+	"data" : {
+			"id" : "string",
+			"username" : "string",
+			"password" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-err :
+{
+	"message" : "Login Failed"
+}
+
+----- GROUP : USER -----
+
+[1] - Create User (method post)
+http://localhost:5000/v1/user
+
+req: 
+{
+	"username" : "string",
+	"email" : "string",
+	"password" : "string",
+	"image" : "string",
+}
+
+res :
+{
+	"message" : "Create User Success",
+	"data": {
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Create User Failed"
+}
+
+[2] - Get User (method get)
+http://localhost:5000/v1/user/find/:id
+
+req: req.params.id
+
+res :
+{
+	"message" : "Get User By Id Success",
+	"data": {
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"image" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Get User By Id Failed"
+}
+
+[3] - Update User (method put)
+http://localhost:5000/v1/user/:id
+
+req: 
+{
+	"username" : "string",
+	"email" : "string",
+	"password" : "string",
+	"image" : "string",
+}
+
+res :
+{
+	"message" : Update User Success",
+	"data": {
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"image" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : Update User Failed"
+}
+
+
+[4] - Delete Destination (method delete)
+http://localhost:5000/v1/user/:id
+
+req: req.params.id
+
+res :
+{
+	"message" : "Delete User Success",
+	"data": {
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"image" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		},
+}
+
+res-error : 
+{
+	"message" : "Delete User Failed"
+}
+
+[5] - Get All User (method get)
+http://localhost:5000/v1/user
+
+req: {}
+
+res :
+{
+	"message" : "Get ALL User Success",
+	"data": {
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"image" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		},
+		{
+			"id" : "string",
+			"username" : "string",
+			"email" : "string",
+			"password" : "string",
+			"image" : "string",
+			"createdAt" : number,
+			"updatedAt" : number,
+		}
+}
+
+res-error : 
+{
+	"message" : "Get ALL User Failed"
+}

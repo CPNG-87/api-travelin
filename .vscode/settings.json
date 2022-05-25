@@ -1,0 +1,10 @@
+{
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "eslint.format.enable": true,
+    "editor.formatOnSave": true,
+}

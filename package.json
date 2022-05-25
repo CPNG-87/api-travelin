@@ -1,0 +1,23 @@
+{
+  "name": "api-travelin",
+  "version": "1.0.0",
+  "description": "api for capstone project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/server.js"
+  },
+  "author": "Moh Lutfi Fauzi <mlfauzi54@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.16"
+  },
+  "dependencies": {
+    "@hapi/hapi": "^20.2.2",
+    "@supabase/supabase-js": "^1.35.3",
+    "dotenv": "^16.0.1",
+    "nanoid": "^3.3.4"
+  }
+}
