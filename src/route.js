@@ -9,6 +9,7 @@ const {
   getAllUserHandler,
   editUserByIdHandler,
   deleteUserByIdHandler,
+  registerHandler,
 } = require('./handler');
 
 const routes = [
@@ -61,6 +62,11 @@ const routes = [
     method: 'DELETE',
     path: '/users/{id}',
     handler: deleteUserByIdHandler,
+  },
+  {
+    method: 'POST',
+    path: '/auth/register',
+    handler: registerHandler,
   },
 ];
 

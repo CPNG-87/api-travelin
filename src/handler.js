@@ -1,4 +1,6 @@
+const CryptoJS = require('crypto-js');
 const { supabase } = require('./supabase');
+require('dotenv').config();
 
 const addDestinationHandler = async (request, h) => {
   const {
@@ -399,6 +401,54 @@ const deleteUserByIdHandler = async (request, h) => {
   }
 };
 
+const registerHandler = async (request, h) => {
+  const {
+    username, email, password, image,
+  } = request.payload;
+
+  const encryptedPassword = CryptoJS.AES.encrypt(password, process.env.PASS_SEC).toString;
+
+  const updatedAt = new Date().toISOString();
+
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .insert([
+        {
+          username,
+          email,
+          password: encryptedPassword,
+          image,
+          updatedAt,
+        },
+      ]);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Register Success',
+      data_register: data,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
 module.exports = {
   addDestinationHandler,
   getAllDestinationHandler,
@@ -410,4 +460,5 @@ module.exports = {
   getAllUserHandler,
   editUserByIdHandler,
   deleteUserByIdHandler,
+  registerHandler,
 };
