@@ -1,0 +1,45 @@
+Tabel Destination 
+
+	"id" : int(11),
+	"title" : varchar(255),
+	"image" : varchar(255),
+	"address" : varchar(255),
+	"lat_address" : int(50),
+	"lng_address" : int(50),
+	"city" : varchar(255),
+	"lat_city" : int(50),
+	"lng_city" : int(50),
+	"country" : varchar(255),
+	"is_food" : boolean,
+	"opening_hours" : varchar(255),
+	"opening_day" : varchar(255),
+	"description" : varchar(255),
+	"cost" : int(11),
+	"id_reviews" : int(11),
+	"created_at" : datetime,
+	"updated_at" : datetime
+
+Tabel Users
+
+	"id" : int(11),
+	"username" : varchar(255),
+	"email" : varchar(255),
+	"password" : varchar(255),
+	"image" : varchar(255),
+	"address" : varchar(255),
+	"is_admin" : boolean,
+	"phone_number" : int(20),
+	"created_at" : datetime,
+	"updated_at" : datetime
+
+Tabel Reviews
+
+	"id" : int(11),
+	"id_users" : int(11),
+	"id_destinations" : int(11), 
+	"name" : varchar(255),
+	"rating" : varchar(255),
+	"review" : varchar(255),
+	"image" : varchar(255),
+	"created_at" : datetime,
+	"updated_at" : datetime

@@ -1,30 +1,35 @@
-const CryptoJS = require('crypto-js');
 const { supabase } = require('./supabase');
 require('dotenv').config();
 
 const addDestinationHandler = async (request, h) => {
   const {
-    title, review, openingHours, description, image, address, city, country, isFood, cost,
+    title, opening_hours, description, image, address, country, is_food, cost,
+    opening_days,
+    lat,
+    lng,
+    id_city,
   } = request.payload;
 
-  const updatedAt = new Date().toISOString();
+  const updated_at = new Date().toISOString();
 
   try {
     const { data, error } = await supabase
-      .from('destination')
+      .from('destinations')
       .insert([
         {
           title,
-          review,
-          openingHours,
+          opening_hours,
+          opening_days,
           description,
           image,
           address,
-          city,
           country,
-          isFood,
+          is_food,
           cost,
-          updatedAt,
+          lat,
+          lng,
+          updated_at,
+          id_city,
         },
       ]);
 
@@ -57,8 +62,13 @@ const addDestinationHandler = async (request, h) => {
 const getAllDestinationHandler = async (request, h) => {
   try {
     const { data: destination, error } = await supabase
-      .from('destination')
-      .select('*');
+      .from('destinations')
+      .select(`
+        *,
+        cities (
+          *
+        )
+      `);
 
     if (error) {
       const response = h.response({
@@ -90,26 +100,32 @@ const editDestinationByIdHandler = async (request, h) => {
   const { id } = request.params;
 
   const {
-    title, review, openingHours, description, image, address, city, country, isFood, cost,
+    title, opening_hours, description, image, address, country, is_food, cost,
+    opening_days,
+    lat,
+    lng,
+    id_city,
   } = request.payload;
 
-  const updatedAt = new Date().toISOString();
+  const updated_at = new Date().toISOString();
 
   try {
     const { data: destination, error } = await supabase
-      .from('destination')
+      .from('destinations')
       .update({
         title,
-        review,
-        openingHours,
+        opening_hours,
+        opening_days,
         description,
         image,
         address,
-        city,
         country,
-        isFood,
+        is_food,
         cost,
-        updatedAt,
+        lat,
+        lng,
+        updated_at,
+        id_city,
       })
       .eq('id', id);
 
@@ -143,7 +159,7 @@ const deleteDestinationByIdHandler = async (request, h) => {
   const { id } = request.params;
   try {
     const { data: destination, error } = await supabase
-      .from('destination')
+      .from('destinations')
       .delete()
       .eq('id', id);
 
@@ -177,8 +193,12 @@ const getDestinationByIdHandler = async (request, h) => {
   const { id } = request.params;
   try {
     const { data: destination, error } = await supabase
-      .from('destination')
-      .select('*')
+      .from('destinations')
+      .select(`*,
+        cities (
+          *
+        )
+      `)
       .eq('id', id);
 
     if (error) {
@@ -207,23 +227,26 @@ const getDestinationByIdHandler = async (request, h) => {
   }
 };
 
-const addUserHandler = async (request, h) => {
+// City Handler
+
+const addCityHandler = async (request, h) => {
   const {
-    username, email, password, image,
+    lat,
+    lng,
+    city,
   } = request.payload;
 
-  const updatedAt = new Date().toISOString();
+  const updated_at = new Date().toISOString();
 
   try {
-    const { data: users, error } = await supabase
-      .from('users')
+    const { data, error } = await supabase
+      .from('cities')
       .insert([
         {
-          username,
-          email,
-          password,
-          image,
-          updatedAt,
+          lat,
+          lng,
+          city,
+          updated_at,
         },
       ]);
 
@@ -238,8 +261,8 @@ const addUserHandler = async (request, h) => {
 
     const response = h.response({
       status: 'Success',
-      message: 'Add Data User Success',
-      data: users,
+      message: 'Add City Success',
+      data_city: data,
     });
     response.code(201);
     return response;
@@ -253,11 +276,11 @@ const addUserHandler = async (request, h) => {
   }
 };
 
-const getUserByIdHandler = async (request, h) => {
+const getCityByIdHandler = async (request, h) => {
   const { id } = request.params;
   try {
-    const { data: users, error } = await supabase
-      .from('users')
+    const { data: cities, error } = await supabase
+      .from('cities')
       .select('*')
       .eq('id', id);
 
@@ -272,8 +295,8 @@ const getUserByIdHandler = async (request, h) => {
 
     const response = h.response({
       status: 'Success',
-      message: 'Get Data User By Id Success',
-      data: users,
+      message: 'Get Data City By Id Success',
+      data: cities,
     });
     response.code(201);
     return response;
@@ -287,10 +310,10 @@ const getUserByIdHandler = async (request, h) => {
   }
 };
 
-const getAllUserHandler = async (request, h) => {
+const getAllCityHandler = async (request, h) => {
   try {
-    const { data: users, error } = await supabase
-      .from('users')
+    const { data: cities, error } = await supabase
+      .from('cities')
       .select('*');
 
     if (error) {
@@ -304,8 +327,8 @@ const getAllUserHandler = async (request, h) => {
 
     const response = h.response({
       status: 'Success',
-      message: 'Get All Data User Success',
-      data: users,
+      message: 'Get All Data City Success',
+      data: cities,
     });
     response.code(201);
     return response;
@@ -319,59 +342,11 @@ const getAllUserHandler = async (request, h) => {
   }
 };
 
-const editUserByIdHandler = async (request, h) => {
+const deleteCityByIdHandler = async (request, h) => {
   const { id } = request.params;
-
-  const {
-    username, email, password, image,
-  } = request.payload;
-
-  const updatedAt = new Date().toISOString();
-
   try {
-    const { data: users, error } = await supabase
-      .from('users')
-      .update({
-        username,
-        email,
-        password,
-        image,
-        updatedAt,
-      })
-      .eq('id', id);
-
-    if (error) {
-      const response = h.response({
-        status: 'Failed',
-        message: error.message,
-      });
-      response.code(500);
-      return response;
-    }
-
-    const response = h.response({
-      status: 'Success',
-      message: 'Update User By Id Success',
-      data: users,
-    });
-    response.code(201);
-    return response;
-  } catch (error) {
-    const response = h.response({
-      status: 'Failed',
-      message: error.message,
-    });
-    response.code(500);
-    return response;
-  }
-};
-
-const deleteUserByIdHandler = async (request, h) => {
-  const { id } = request.params;
-
-  try {
-    const { data: users, error } = await supabase
-      .from('users')
+    const { data: city, error } = await supabase
+      .from('cities')
       .delete()
       .eq('id', id);
 
@@ -386,8 +361,8 @@ const deleteUserByIdHandler = async (request, h) => {
 
     const response = h.response({
       status: 'Success',
-      message: 'Delete User By Id Success',
-      data: users,
+      message: 'Delete Data City By Id Success',
+      data: city,
     });
     response.code(201);
     return response;
@@ -401,25 +376,68 @@ const deleteUserByIdHandler = async (request, h) => {
   }
 };
 
-const registerHandler = async (request, h) => {
-  const {
-    username, email, password, image,
-  } = request.payload;
+const editCityByIdHandler = async (request, h) => {
+  const { id } = request.params;
 
-  const encryptedPassword = CryptoJS.AES.encrypt(password, process.env.PASS_SEC).toString;
+  const { lat, lng, city } = request.payload;
 
-  const updatedAt = new Date().toISOString();
+  const updated_at = new Date().toISOString();
 
   try {
-    const { data, error } = await supabase
-      .from('users')
+    const { data: cities, error } = await supabase
+      .from('cities')
+      .update({
+        lat,
+        lng,
+        updated_at,
+        city,
+      })
+      .eq('id', id);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Update City By Id Success',
+      data: cities,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+// Reviews Handler
+
+const addReviewHandler = async (request, h) => {
+  const { id_destination } = request.params;
+  const { rating, review, image } = request.payload;
+
+  const updated_at = new Date().toISOString();
+
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
       .insert([
         {
-          username,
-          email,
-          password: encryptedPassword,
+          id_destination,
+          rating,
+          review,
           image,
-          updatedAt,
+          updated_at,
         },
       ]);
 
@@ -434,8 +452,193 @@ const registerHandler = async (request, h) => {
 
     const response = h.response({
       status: 'Success',
-      message: 'Register Success',
-      data_register: data,
+      message: 'Add Review Success',
+      data: reviews,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getReviewByIdHandler = async (request, h) => {
+  const { id } = request.params;
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .select(`*,
+      destinations (
+        *
+      )
+    `)
+      .eq('id', id);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Get Data Review By Id Success',
+      data: reviews,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getReviewByIdDestinationHandler = async (request, h) => {
+  const { id_destination } = request.params;
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('id_destination', id_destination);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Get Data Review By Id Destination Success',
+      data: reviews,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const getAllReviewHandler = async (request, h) => {
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .select('*');
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Get All Data review Success',
+      data: reviews,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const deleteReviewByIdHandler = async (request, h) => {
+  const { id } = request.params;
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Delete Data Review By Id Success',
+      data: reviews,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+
+const editReviewByIdHandler = async (request, h) => {
+  const { id } = request.params;
+
+  const {
+    rating, review, image, id_destination,
+  } = request.payload;
+
+  const updated_at = new Date().toISOString();
+
+  try {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .update({
+        id_destination,
+        rating,
+        review,
+        image,
+        updated_at,
+      })
+      .eq('id', id);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Update Reviews By Id Success',
+      data: reviews,
     });
     response.code(201);
     return response;
@@ -455,10 +658,15 @@ module.exports = {
   editDestinationByIdHandler,
   deleteDestinationByIdHandler,
   getDestinationByIdHandler,
-  addUserHandler,
-  getUserByIdHandler,
-  getAllUserHandler,
-  editUserByIdHandler,
-  deleteUserByIdHandler,
-  registerHandler,
+  addCityHandler,
+  getCityByIdHandler,
+  getAllCityHandler,
+  deleteCityByIdHandler,
+  editCityByIdHandler,
+  addReviewHandler,
+  getReviewByIdHandler,
+  getAllReviewHandler,
+  deleteReviewByIdHandler,
+  editReviewByIdHandler,
+  getReviewByIdDestinationHandler,
 };

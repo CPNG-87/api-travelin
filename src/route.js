@@ -4,12 +4,17 @@ const {
   editDestinationByIdHandler,
   deleteDestinationByIdHandler,
   getDestinationByIdHandler,
-  addUserHandler,
-  getUserByIdHandler,
-  getAllUserHandler,
-  editUserByIdHandler,
-  deleteUserByIdHandler,
-  registerHandler,
+  addCityHandler,
+  getCityByIdHandler,
+  getAllCityHandler,
+  deleteCityByIdHandler,
+  editCityByIdHandler,
+  addReviewHandler,
+  getReviewByIdHandler,
+  getAllReviewHandler,
+  deleteReviewByIdHandler,
+  editReviewByIdHandler,
+  getReviewByIdDestinationHandler,
 } = require('./handler');
 
 const routes = [
@@ -40,33 +45,58 @@ const routes = [
   },
   {
     method: 'POST',
-    path: '/users',
-    handler: addUserHandler,
+    path: '/city',
+    handler: addCityHandler,
   },
   {
     method: 'GET',
-    path: '/users/{id}',
-    handler: getUserByIdHandler,
+    path: '/city/{id}',
+    handler: getCityByIdHandler,
   },
   {
     method: 'GET',
-    path: '/users',
-    handler: getAllUserHandler,
-  },
-  {
-    method: 'PUT',
-    path: '/users/{id}',
-    handler: editUserByIdHandler,
+    path: '/city',
+    handler: getAllCityHandler,
   },
   {
     method: 'DELETE',
-    path: '/users/{id}',
-    handler: deleteUserByIdHandler,
+    path: '/city/{id}',
+    handler: deleteCityByIdHandler,
+  },
+  {
+    method: 'PUT',
+    path: '/city/{id}',
+    handler: editCityByIdHandler,
   },
   {
     method: 'POST',
-    path: '/auth/register',
-    handler: registerHandler,
+    path: '/review/{id_destination}',
+    handler: addReviewHandler,
+  },
+  {
+    method: 'GET',
+    path: '/review/{id}',
+    handler: getReviewByIdHandler,
+  },
+  {
+    method: 'GET',
+    path: '/review',
+    handler: getAllReviewHandler,
+  },
+  {
+    method: 'DELETE',
+    path: '/review/{id}',
+    handler: deleteReviewByIdHandler,
+  },
+  {
+    method: 'PUT',
+    path: '/review/{id}',
+    handler: editReviewByIdHandler,
+  },
+  {
+    method: 'GET',
+    path: '/review/destinations/{id_destination}',
+    handler: getReviewByIdDestinationHandler,
   },
 ];
 
