@@ -15,6 +15,7 @@ const {
   deleteReviewByIdHandler,
   editReviewByIdHandler,
   getReviewByIdDestinationHandler,
+  filterCityHandler,
 } = require('./handler');
 
 const routes = [
@@ -67,6 +68,11 @@ const routes = [
     method: 'PUT',
     path: '/city/{id}',
     handler: editCityByIdHandler,
+  },
+  {
+    method: 'POST',
+    path: '/city/filter',
+    handler: filterCityHandler,
   },
   {
     method: 'POST',

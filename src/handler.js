@@ -227,8 +227,41 @@ const getDestinationByIdHandler = async (request, h) => {
   }
 };
 
-// City Handler
+const filterCityHandler = async (request, h) => {
+  const { query } = request.payload;
 
+  try {
+    const { data: destinations, error } = await supabase
+      .from('destinations')
+      .select('*, cities!inner(*)')
+      .ilike('cities.city', `%${query}%`);
+
+    if (error) {
+      const response = h.response({
+        status: 'Failed',
+        message: error.message,
+      });
+      response.code(500);
+      return response;
+    }
+
+    const response = h.response({
+      status: 'Success',
+      message: 'Filter City Success',
+      data: destinations,
+    });
+    response.code(201);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      status: 'Failed',
+      message: error.message,
+    });
+    response.code(500);
+    return response;
+  }
+};
+// City Handler
 const addCityHandler = async (request, h) => {
   const {
     lat,
@@ -669,4 +702,5 @@ module.exports = {
   deleteReviewByIdHandler,
   editReviewByIdHandler,
   getReviewByIdDestinationHandler,
+  filterCityHandler,
 };
