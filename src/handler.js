@@ -228,7 +228,7 @@ const getDestinationByIdHandler = async (request, h) => {
 };
 
 const filterCityHandler = async (request, h) => {
-  const { query } = request.payload;
+  const { query } = request.params;
 
   try {
     const { data: destinations, error } = await supabase

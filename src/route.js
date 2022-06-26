@@ -71,7 +71,7 @@ const routes = [
   },
   {
     method: 'POST',
-    path: '/city/filter',
+    path: '/city/filter/{query}',
     handler: filterCityHandler,
   },
   {
